@@ -2,69 +2,9 @@
 <html lang="zh-Hant-TW">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      .touch__wrap {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 20;
-        width: 100%;
-        height: 100vh;
-        overflow: hidden;
-        pointer-events: none;
-      }
-
-      .sparkler {
-        position: absolute;
-        box-shadow: 0 0 8px 8px rgba(245, 224, 163, 0.08);
-      }
-
-      .sparkler__spark {
-        --shadow: hsl( 
-          var(--h),
-          calc(var(--s, 50) * 1%),
-          calc(var(--l, 25) * 1%)
-        );
-        position: absolute;
-        height: 8px;
-        width: 1.6px;
-        box-shadow: 0 0 10px 2px var(--shadow);
-        background-color: #fff;
-        transform: rotate(calc(var(--rotation) * 1deg)) translate(0, 0);
-        animation: spark calc(var(--speed) * 1s) calc(var(--delay) * -1s)
-          infinite ease;
-        z-index: 2;
-      }
-
-      @keyframes spark {
-        to {
-          opacity: 0;
-          transform: rotate(calc(var(--rotation) * 1deg))
-            translate(0, calc(var(--travel) * 1px));
-        }
-      }
-
-      .firecracker {
-        position: absolute;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        opacity: 1;
-      }
-
-      @keyframes fade-out {
-        0% {
-          opacity: 1;
-          transform: translate(0, 0) scale(1);
-        }
-        100% {
-          opacity: 0;
-          transform: translate(2%, 2%) scale(0);
-        }
-      }
-    </style>
     <link rel="stylesheet" href="main-elevator-left.css">
     <link rel="stylesheet" href="main-elevator-right.css">
+    <link rel="stylesheet" href="">
   <link href="vendor-bundle.css" rel="stylesheet"><link href="app-bundle.css" rel="stylesheet"></head>
   <body>
     <header class="header__wrap">
