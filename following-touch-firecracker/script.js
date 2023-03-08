@@ -23,22 +23,22 @@ function buildTouchAnimate() {
 function addWillChange() {
   const childArray = Array.from(touchWrap.childNodes);
 
-  childArray.forEach( function(el) {
+  childArray.forEach(function (el) {
     el.classList.add("js-willChange");
-  })
+  });
 }
 
 // 當 CSS 動畫結束後清除 will-change 屬性
 function removeWillChange() {
   const childArray = Array.from(touchWrap.childNodes);
 
-  childArray.forEach( function(el) {
+  childArray.forEach(function (el) {
     el.classList.remove("js-willChange");
-  })
+  });
 }
 
 // 當滑鼠停止滑動時，清除掉 will-change
-function firecrackerMouseMoveStop () {
+function firecrackerMouseMoveStop() {
   let timer;
   let delayTime = 250;
 
@@ -56,7 +56,7 @@ function removeSparkle() {
   const currentSparkleCount = touchWrap.children.length;
   while (touchWrap.firstChild && currentSparkleCount >= 50) {
     touchWrap.removeChild(touchWrap.firstChild);
-  };
+  }
 }
 
 function removeSparkleWithNumber() {
@@ -67,7 +67,7 @@ function removeSparkleWithNumber() {
   // 超過 maxLength，就刪除前面一半數量的元素
   if (childArray.length > maxLength) {
     let newChildArray = childArray.splice(0, maxLength / 2);
-    
+
     newChildArray.forEach(function (el) {
       el.remove();
     });
@@ -170,4 +170,4 @@ function firecrackerMouseMove(mouse) {
   firecracker.style.opacity = 0;
 }
 
-export let initTouchFirecracker = document.addEventListener("DOMContentLoaded", buildTouchAnimate);
+document.addEventListener("DOMContentLoaded", buildTouchAnimate);
