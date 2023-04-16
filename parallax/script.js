@@ -1,6 +1,7 @@
 // html setup
 const itemsNodeLists = document.querySelectorAll('.parallax__item');
 const itemsArr = Array.from(itemsNodeLists);
+const entireHTML = document.documentElement;
 
 // input setup
 let input = {
@@ -14,10 +15,16 @@ let input = {
     end: window.innerHeight,
     current: 0,
   },
+  scrollY: {
+    start: 0,
+    end: entireHTML.scrollHeight - window.innerHeight,
+    current: 0,
+  },
 }
 // 設定 input 的範圍值
 input.mouseX.range = input.mouseX.end - input.mouseX.start;
 input.mouseY.range = input.mouseY.end - input.mouseY.start;
+input.scrollY.range = input.scrollY.end - input.scrollY.start;
 
 // output setup
 let output = {
@@ -62,14 +69,21 @@ const updateInputs = () => {
   // mouseY input
   input.mouseY.current = mouse.y;
   input.mouseY.fraction = (input.mouseY.current - input.mouseY.start) / input.mouseY.range;
+
+  // scrollY input
+  input.scrollY.current = entireHTML.scrollTop;
+  input.scrollY.fraction = (input.scrollY.current - input.scrollY.start) / input.scrollY.range;
 }
 
 const updateOutputs = () => {
   // output x and y
-  output.x.current = output.x.end - (input.mouseX.fraction * output.x.range);
+  // output.x.current = output.x.end - (input.mouseX.fraction * output.x.range);
   // output.x.opposite = output.x.end - (input.mouseX.fraction * output.x.range);
-  output.y.current = output.y.end - (input.mouseY.fraction * output.y.range);
+  // output.y.current = output.y.end - (input.mouseY.fraction * output.y.range);
   // output.y.opposite = output.y.end - (input.mouseY.fraction * output.y.range);
+
+  // scroll y
+  output.y.current = output.y.end - (input.scrollY.fraction * output.y.range);
 }
 
 const updateEachItem = () => {
@@ -105,24 +119,29 @@ const handleMouseMove = (event) => {
   // if (input.mouseX.fraction < 0) input.mouseX.fraction = 0;
 }
 
+const handleScroll = () => {
+  updateInputs();
+  updateOutputs();
+  updateEachItem();
+  // const scrollMax = entireHTML.scrollHeight - window.innerHeight;
+}
+
 const handleResize = () => {
   input.mouseX.end = window.innerWidth;
   input.mouseY.end = window.innerHeight;
+  input.scrollY.end = entireHTML.scrollHeight - window.innerHeight;
 
   // 當 end 的值更新時，也需要重新計算 range 的值
   input.mouseX.range = input.mouseX.end - input.mouseX.start;
   input.mouseY.range = input.mouseY.end - input.mouseY.start;
+  input.scrollY.range = input.scrollY.end - input.scrollY.start;
 }
 
-const handleScroll = () => {
-  console.log('s');
-}
-
-// fraction value
-window.addEventListener('mousemove', handleMouseMove)
+// mousemove event
+// window.addEventListener('mousemove', handleMouseMove)
 
 // scroll event
-// document.addEventListener('scroll', handleScroll);
+document.addEventListener('scroll', handleScroll);
 
 // 監聽 resize 時的 window 寬度
 window.addEventListener('resize', handleResize);
