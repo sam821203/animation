@@ -1,6 +1,6 @@
 // html setup
-const pupilsNodeLists = document.querySelectorAll('.pupil');
-const pupilsArr = Array.from(pupilsNodeLists);
+const itemsNodeLists = document.querySelectorAll('.parallax__item');
+const itemsArr = Array.from(itemsNodeLists);
 
 // input setup
 let input = {
@@ -22,56 +22,87 @@ input.mouseY.range = input.mouseY.end - input.mouseY.start;
 // output setup
 let output = {
   x: {
-    start: -75,
-    end: 75,
+    start: -150,
+    end: 150,
     current: 0,
   },
   y: {
-    start: -75,
-    end: 75,
+    start: -150,
+    end: 150,
     current: 0,
+  },
+  zIndex: {
+    range: 10000,
+  },
+  scale: {
+    start: 1,
+    end: 0.1,
+  },
+  blur: {
+    startingDepth: 0.2,
+    range: 10,
   }
 }
 // 設定 output 的範圍值
 output.x.range = output.x.end - output.x.start;
 output.y.range = output.y.end - output.y.start;
+output.scale.range = output.scale.end - output.scale.start
 
-const handleMouseMove = (event) => {
+let mouse = {
+  // 讓元素的初始位置在視窗中間
+  x: window.innerWidth * 0.5,
+  y: window.innerHeight * 0.5,
+} 
+
+const updateInputs = () => {
   // mouseX input
-  input.mouseX.current = event.clientX;
+  input.mouseX.current = mouse.x;
   input.mouseX.fraction = (input.mouseX.current - input.mouseX.start) / input.mouseX.range;
 
   // mouseY input
-  input.mouseY.current = event.clientY;
+  input.mouseY.current = mouse.y;
   input.mouseY.fraction = (input.mouseY.current - input.mouseY.start) / input.mouseY.range;
-  
-  // output x
-  output.x.current = output.x.start + (input.mouseX.fraction * output.x.range);
-  // output x inverse
-  output.x.opposite = output.x.end - (input.mouseX.fraction * output.x.range);
+}
 
-  // output y
-  output.y.current = output.y.start + (input.mouseY.fraction * output.y.range);
-  // output y inverse
-  output.y.opposite = output.y.end - (input.mouseY.fraction * output.y.range);
+const updateOutputs = () => {
+  // output x and y
+  output.x.current = output.x.end - (input.mouseX.fraction * output.x.range);
+  // output.x.opposite = output.x.end - (input.mouseX.fraction * output.x.range);
+  output.y.current = output.y.end - (input.mouseY.fraction * output.y.range);
+  // output.y.opposite = output.y.end - (input.mouseY.fraction * output.y.range);
+}
 
+const updateEachItem = () => {
   // apply output to html
-  pupilsArr.forEach((pupil, i) => {
+  itemsArr.forEach((item, i) => {
+    const depth = parseFloat(item.dataset.depth, 10);
+    let itemOutput = {
+      x: output.x.current - (output.x.current * depth),
+      y: output.y.current - (output.y.current * depth),
+      zIndex: output.zIndex.range - (output.zIndex.range * depth),
+      scale: output.scale.start + (output.scale.range * depth),
+      blur: (depth - output.blur.startingDepth) * output.blur.range,
+    };
 
-    if (i === 0) {
-      pupil.style.transform = `translate(${output.x.current}px, ${output.y.current}px)`;
-    } else {
-      pupil.style.transform = `translate(${output.x.opposite}px, ${output.y.opposite}px)`;
-    }
+    item.style.zIndex = itemOutput.zIndex;
+    item.style.transform = `scale(${itemOutput.scale}) translate(${itemOutput.x}px, ${itemOutput.y}px)`;
+    item.style.filter = `blur(${itemOutput.blur}px)`;
   })
+}
+
+const handleMouseMove = (event) => {
+
+  // 將滑鼠的位置儲存到 mouse 物件中
+  mouse.x = event.clientX;
+  mouse.y = event.clientY;
+
+  updateInputs();
+  updateOutputs();
+  updateEachItem();
 
   // 控制在 0 ~ 1 之間
   // if (input.mouseX.fraction > 1) input.mouseX.fraction = 1;
   // if (input.mouseX.fraction < 0) input.mouseX.fraction = 0;
-
-  // console.log('fraction X: ', input.mouseX.fraction);
-  // console.log('fraction Y: ', input.mouseY.fraction);
-  console.log('output X: ', output.x.current);
 }
 
 const handleResize = () => {
@@ -83,8 +114,19 @@ const handleResize = () => {
   input.mouseY.range = input.mouseY.end - input.mouseY.start;
 }
 
+const handleScroll = () => {
+  console.log('s');
+}
+
 // fraction value
 window.addEventListener('mousemove', handleMouseMove)
 
+// scroll event
+// document.addEventListener('scroll', handleScroll);
+
 // 監聽 resize 時的 window 寬度
 window.addEventListener('resize', handleResize);
+
+updateInputs();
+updateOutputs();
+updateEachItem();

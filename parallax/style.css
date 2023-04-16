@@ -1,55 +1,30 @@
 body {
-  background-color: #b6d4aa;
+  background-color: #202020;
   height: 300vh;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* .block {
-  background-color: #006064;
-  width: 100px;
-  height: 100vh;
+.parallax-container {
+  position: relative;
+  min-height: 100vh;
 }
 
-.block2 {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #006064;
-  width: 200px;
-  height: 100vh;
-} */
+.parallax-container.alt {
+  background-color: #ffcdd2;
+}
 
-.eye {
+.parallax__item {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   margin-top: -100px;
   margin-left: -100px;
-  background-color: #fff;
-  border-radius: 50%;
-  /* overflow: hidden; */
 }
 
-.pupil {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50px;
-  height: 50px;
-  margin-top: -25px;
-  margin-left: -25px;
-  background-color: black;
-  border-radius: 50%;
-}
-
-.eye1 {
-  margin-left: -175px;
-}
-
-.eye2 {
-  margin-left: -25px;
+.parallax__item img {
+  width: 100%;
 }
