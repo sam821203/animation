@@ -33,15 +33,6 @@ function addWillChange() {
   });
 }
 
-// 當 CSS 動畫結束後清除 will-change 屬性
-// function removeWillChange() {
-//   const childArray = Array.from(touchWrap.childNodes);
-
-//   childArray.forEach(function (el) {
-//     el.classList.remove("js-willChange");
-//   });
-// }
-
 // 生成火花動畫
 function firecrackerAnimate(el, max, minTravel, maxTravel) {
   const animationDuration = 1.2;
