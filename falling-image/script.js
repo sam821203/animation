@@ -3,73 +3,84 @@
 function initFallingBackground() {
   // if(!checkAnimationClass()){
   // };
-  new FallingImages();
+  // initFallingImage();
+  new FallingImages(30);
   checkAnimationClass();
 } 
 
 const rootStyles = window.getComputedStyle(document.documentElement);
 
-function FallingImages() {
-  // 檢查是否有 random__layer，如果沒有則不執行
-  if (document.querySelector(".falling-random .random__block")) {
+// function FallingImages() {
+//   // 檢查是否有 random__layer，如果沒有則不執行
+//   if (document.querySelector(".falling-random .random__block")) {
 
-  const imgNum = Number(rootStyles.getPropertyValue("--number")) || 10;
-    console.log(this);
-    this.num = imgNum;
-    this.init();
+//   const imgNum = Number(rootStyles.getPropertyValue("--number")) || 10;
+//     console.log(this);
+//     this.num = imgNum;
+//     this.init();
+//   }
+// }
+
+class FallingImages {
+  constructor(imgNum) {
+    if (document.querySelector(".falling-random .random__block")) {
+      // const imgNum = Number(rootStyles.getPropertyValue("--number")) || 10;
+      this.imgNum = imgNum || 10;
+      this.init(imgNum);
+    }
+  }
+  
+  init() {
+    this.image = document.createElement("div");
+    this.image.classList.add('falling-random-image');
+  
+    for (let i = 0; i < this.imgNum; i++) {
+      this.clone(i);
+    }
+  }
+
+  clone(i) {
+    const myContainer = document.querySelector(".random__layer");
+    // cloneNode() 方法拷貝所有属性和值
+    const imageClone = this.image.cloneNode(true); 
+    const imageStyle = imageClone.style;
+    const regex = /[+-]?\d+(\.\d+)?/g;
+  
+    // 取得 :root 裡的變數屬性值
+    // 最大尺寸
+    const fSize = Number(rootStyles.getPropertyValue("--size")) || 22;
+    // 最小尺寸
+    const fSizeMin = Number(rootStyles.getPropertyValue("--size-min")) || 12;
+    const animeDuration = Number(rootStyles.getPropertyValue("--time")) || 8;
+  
+    imageStyle.left = 100 * Math.random() + "%";
+    imageStyle.width = Math.random() + 0.8 + "em";
+    imageStyle.height = imageStyle.width;
+    imageStyle.fontSize = fSize * Math.random() + fSizeMin + "px";
+    imageStyle.animationDelay = 8 * Math.random() + "s";
+    imageStyle.animationDuration = animeDuration * Math.random() + 6 + "s";
+  
+    // 根據圖片大小會判斷該圖片 blur 程度
+    const blurValue = 2 - parseFloat(imageStyle.width.match(regex) * 2);
+  
+    // imageClone.classList.add("is-rotateY");
+  
+    // if (i % 3 == 0) {
+    //   imageClone.classList.add("is-rotateX");
+    // } else if (i % 5 == 0) {
+    //   imageClone.classList.add("is-rotateY");
+    // } else if (i % 2 == 0) {
+    //   imageClone.classList.add("is-rotateZ");
+    // }
+  
+    myContainer.appendChild(imageClone);
+  
+    imageClone.addEventListener("animationend", () => {
+      imageClone.remove();
+      this.clone(i);
+    });
   }
 }
-
-FallingImages.prototype.init = function () {
-
-  this.image = document.createElement("div");
-  this.image.classList.add('falling-random-image');
-
-  for (let i = 0; i < this.num; i++) {
-    this.clone(i);
-  }
-};
-
-FallingImages.prototype.clone = function (i) {
-  const myContainer = document.querySelector(".random__layer");
-  const imageClone = this.image.cloneNode(true);
-  const imageStyle = imageClone.style;
-  const regex = /[+-]?\d+(\.\d+)?/g;
-
-  // 取得 :root 裡的變數屬性值
-  // 最大尺寸
-  const fSize = Number(rootStyles.getPropertyValue("--size")) || 22;
-  // 最小尺寸
-  const fSizeMin = Number(rootStyles.getPropertyValue("--size-min")) || 12;
-  const animeDuration = Number(rootStyles.getPropertyValue("--time")) || 8;
-
-  imageStyle.left = 100 * Math.random() + "%";
-  imageStyle.width = Math.random() + 0.8 + "em";
-  imageStyle.height = imageStyle.width;
-  imageStyle.fontSize = fSize * Math.random() + fSizeMin + "px";
-  imageStyle.animationDelay = 8 * Math.random() + "s";
-  imageStyle.animationDuration = animeDuration * Math.random() + 6 + "s";
-
-  // 根據圖片大小會判斷該圖片 blur 程度
-  const blurValue = 2 - parseFloat(imageStyle.width.match(regex) * 2);
-
-  // imageClone.classList.add("is-rotateY");
-
-  // if (i % 3 == 0) {
-  //   imageClone.classList.add("is-rotateX");
-  // } else if (i % 5 == 0) {
-  //   imageClone.classList.add("is-rotateY");
-  // } else if (i % 2 == 0) {
-  //   imageClone.classList.add("is-rotateZ");
-  // }
-
-  myContainer.appendChild(imageClone);
-
-  imageClone.addEventListener("animationend", () => {
-    imageClone.remove();
-    this.clone(i);
-  });
-};
 
 // 判斷 bg__container 裡有甚麼 class
 function checkAnimationClass() {
@@ -91,5 +102,12 @@ function checkAnimationClass() {
   //   return false;
   // } 
 }
+
+// const initFallingImage = () => {
+//   const newFallingImage = new FallingImages(30);
+
+//   newFallingImage.clone();
+//   newFallingImage.init();
+// }
 
 document.addEventListener("DOMContentLoaded", initFallingBackground);
