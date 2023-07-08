@@ -1,0 +1,13 @@
+body {
+  background-color: #e7d2c7;
+  height: 300vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mario,
+.luigi {
+  width: 200px;
+  height: auto;
+}
