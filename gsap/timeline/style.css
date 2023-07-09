@@ -1,0 +1,20 @@
+body {
+  /* display: flex;
+  justify-content: center;
+  align-items: flex-end; */
+  background-color: #e7d2c7;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* background-image: url('https://preview.redd.it/mario-brothers-movie-desktop-background-v0-bklm7sag0yr91.png?width=1080&crop=smart&auto=webp&v=enabled&s=15f259f54d067527b67307f4253903016da84179');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; */
+}
+
+img {
+  display: inline-block;
+  width: 200px;
+  height: auto;
+}
